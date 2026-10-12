@@ -1,0 +1,1176 @@
+{
+  "model": "B",
+  "name": "B-anatomico",
+  "description": "Anatomic archetype (Synicem-like), proximal part for a chest-tube stem: metaphyseal body with medial calcar curve, rounded lateral shoulder with suture holes, near-hemispherical polished head, short stem ending in a tube spigot + flat shoulder; straight core wire reported in meta",
+  "headD": 48,
+  "params": {
+    "headD": 48,
+    "headHD": 0.5,
+    "rimFillet": 2,
+    "nsDeg": 135,
+    "headOffset": 6,
+    "totalLength": 115,
+    "tubeFr": 28,
+    "couplingLen": 15,
+    "shoulderW": 2,
+    "shoulderFillet": 0.6,
+    "stemEdge": 0.6,
+    "finDraftDeg": 5,
+    "metaLen": 45,
+    "footprintML": null,
+    "footprintMaxML": 30,
+    "footprintRatio": 0.583,
+    "bodyAP": 20,
+    "medialRimGap": 14,
+    "footprintMargin": 5,
+    "calcarPow": 1.6,
+    "shoulderX": 19,
+    "finAP": 12,
+    "finTaper": 0.6,
+    "finTaperLen": 12,
+    "finEdge": 3,
+    "sutureHoles": 3,
+    "holeD": 2.5,
+    "holeSpacing": 8.5,
+    "holeCement": 6,
+    "holeBodyClear": 11,
+    "finGap": 6,
+    "coreD": 3.2,
+    "tubeWall": 1.3,
+    "boreClearance": 0.3,
+    "coreHeadCover": 10,
+    "kFin": 5,
+    "kHead": 8,
+    "kHeadMin": 4,
+    "minConcaveR": 2,
+    "proxyRimMargin": 0.5,
+    "headFilletAngleDeg": 7,
+    "edge": 0.7
+  },
+  "meta": {
+    "head": {
+      "center": [
+        6,
+        0,
+        91
+      ],
+      "radius": 24,
+      "axis": [
+        0.7071067811865475,
+        0,
+        0.7071067811865476
+      ],
+      "capAngleDeg": 84.28409142954588
+    },
+    "holes": [
+      {
+        "x": -11,
+        "z": 88.20101012677667,
+        "r": 1.25
+      },
+      {
+        "x": -11,
+        "z": 79.70101012677667,
+        "r": 1.25
+      },
+      {
+        "x": -11,
+        "z": 71.20101012677667,
+        "r": 1.25
+      }
+    ],
+    "headCenter": [
+      6,
+      0,
+      91
+    ],
+    "headD": 48,
+    "headHeight": 24,
+    "headHOverD": 0.5,
+    "headBaseDiameter": 43.82,
+    "NSA": 135,
+    "headAxis": [
+      0.70711,
+      0,
+      0.70711
+    ],
+    "headOffsetMedial": 6,
+    "resection": {
+      "O": [
+        0,
+        0,
+        97
+      ],
+      "normal": [
+        0.70711,
+        0,
+        0.70711
+      ],
+      "baseCenter": [
+        6,
+        0,
+        91
+      ],
+      "note": "O = cut plane × stem axis; the head base (flat) lies on this plane"
+    },
+    "tube": {
+      "what": "chest tube filled with cement = the distal stem (Klosterman 2021, PMC7917196). This positive is the proximal part only.",
+      "fr": 28,
+      "od": 9.333,
+      "options": [
+        {
+          "fr": 24,
+          "od": 8
+        },
+        {
+          "fr": 28,
+          "od": 9.33
+        },
+        {
+          "fr": 32,
+          "od": 10.67
+        },
+        {
+          "fr": 36,
+          "od": 12
+        }
+      ],
+      "axis": {
+        "point": [
+          0,
+          0,
+          0
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "note": "coaxial with the stem axis; the tube leaves the part at z = 0 going −Z"
+      },
+      "spigot": {
+        "diameter": 9.333,
+        "z": [
+          0,
+          15
+        ],
+        "measuredMaxRadius": 4.667,
+        "note": "in the mold this cylinder is the bore that seats the tube end (tube fills it; cement fills the tube)"
+      },
+      "shoulder": {
+        "z": 15,
+        "innerD": 9.33,
+        "outerD": 13.33,
+        "flatAnnulus": [
+          5.27,
+          6.07
+        ],
+        "measuredFlatZ": [
+          15,
+          15
+        ],
+        "note": "flat annular batente; set the tube end at this plane. It is a widening of the cavity, so the stop is visual (open half-mold), not mechanical — see docs/modelB.md"
+      },
+      "couplingLength": 15,
+      "spigotVolumeCm3": 1.03,
+      "lumen": {
+        "wallAssumedMm": 1.3,
+        "innerD": 6.73,
+        "table": [
+          {
+            "fr": 24,
+            "od": 8,
+            "idAssumed": 5.4,
+            "coverOverCore": 1.1
+          },
+          {
+            "fr": 28,
+            "od": 9.33,
+            "idAssumed": 6.73,
+            "coverOverCore": 1.77
+          },
+          {
+            "fr": 32,
+            "od": 10.67,
+            "idAssumed": 8.07,
+            "coverOverCore": 2.43
+          },
+          {
+            "fr": 36,
+            "od": 12,
+            "idAssumed": 9.4,
+            "coverOverCore": 3.1
+          }
+        ],
+        "note": "ASSUMED wall — measure the tube. Below the batente (z < couplingLen) and all along the tube the cement is a rod of Ø innerD, not the molded shaft: the steel core carries the load there."
+      },
+      "cementSectionStep": {
+        "z": 15,
+        "fromD": 6.73,
+        "toD": 13.27,
+        "belowLockedMin8": true,
+        "note": "the cement rod inside the tube (Ø lumen) widens to the molded shaft at the tube end; the re-entrant corner there is shaped by the square-cut tube end (not by this positive). Bevel the tube end inside if wanted."
+      },
+      "bore": {
+        "what": "the mold halves need a bore through their distal wall so the tube can enter the spigot; nothing in the mold makers creates it from this STL. Tool = cylinder on the stem axis, subtract it from both mold halves.",
+        "toolD": 9.633,
+        "z": [
+          -40,
+          15
+        ],
+        "cli": "node src/models/modelB.mjs bore-tool | bore-mold (see docs/modelB.md)"
+      }
+    },
+    "dims": {
+      "positiveLengthZ": 115,
+      "maxExtent": 115,
+      "extentXYZ": [
+        49,
+        47.81,
+        115
+      ],
+      "stemDiameter": 13.27,
+      "stemDiameterDesign": 13.33,
+      "stemDiameterMeasured": {
+        "min": 13.267,
+        "max": 13.33,
+        "samples": [
+          [
+            16,
+            13.33
+          ],
+          [
+            18,
+            13.33
+          ],
+          [
+            20,
+            13.309
+          ],
+          [
+            22,
+            13.267
+          ],
+          [
+            24,
+            13.267
+          ],
+          [
+            26,
+            13.267
+          ],
+          [
+            28,
+            13.267
+          ],
+          [
+            30,
+            13.267
+          ],
+          [
+            32,
+            13.267
+          ],
+          [
+            34,
+            13.267
+          ],
+          [
+            36,
+            13.267
+          ],
+          [
+            38,
+            13.267
+          ],
+          [
+            40,
+            13.267
+          ],
+          [
+            42,
+            13.267
+          ],
+          [
+            44,
+            13.267
+          ]
+        ]
+      },
+      "stemFromTo": [
+        15,
+        52
+      ],
+      "metaphysisStartZ": 52,
+      "cutPlaneAtStemAxisZ": 97,
+      "footprintDesign": {
+        "alongPlaneML": 24.8,
+        "AP": 20
+      },
+      "footprintMeasured": [
+        {
+          "depthBelowCut": 2,
+          "alongPlaneML": 29.8,
+          "AP": 23.5
+        },
+        {
+          "depthBelowCut": 10,
+          "alongPlaneML": 32.8,
+          "AP": 17.5
+        },
+        {
+          "depthBelowCut": 20,
+          "alongPlaneML": 38,
+          "AP": 15
+        }
+      ],
+      "shoulderLateralX": -19,
+      "finAP": 12,
+      "bbox": {
+        "min": [
+          -19,
+          -23.91,
+          0
+        ],
+        "max": [
+          30,
+          23.91,
+          115
+        ]
+      }
+    },
+    "core": {
+      "what": "continuous stainless-steel core wire through the cement-filled tube and this part (NOT subtracted: the solid is full). Mold system: add a wire hole along the axis if wanted.",
+      "diameter": 3.2,
+      "entry": {
+        "point": [
+          0,
+          0,
+          0
+        ],
+        "outward": [
+          0,
+          0,
+          -1
+        ],
+        "note": "enters at the distal face centre, continues distally inside the tube"
+      },
+      "polyline": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          101.852
+        ]
+      ],
+      "direction": [
+        0,
+        0,
+        1
+      ],
+      "lengthInPart": 101.85,
+      "headCover": 10,
+      "minCementCover": {
+        "mm": 3.3,
+        "at": [
+          0,
+          0,
+          16
+        ],
+        "proximalToShoulderMm": 4.46,
+        "samples": 173,
+        "note": "measured from the batente upward (molded cement)"
+      },
+      "coverInTube": {
+        "mm": 1.77,
+        "note": "inside the tube the cement surface is the lumen: (innerD − coreD)/2 with the ASSUMED wall"
+      }
+    },
+    "checks": {
+      "maxAboveCutOutsideHead": 0,
+      "holeBridgeMinMm": 6,
+      "concaveRadius": {
+        "rMin": 2,
+        "eps": 0.03,
+        "sections": [
+          {
+            "family": "y",
+            "plane": "y=0",
+            "excessAtRmin": 0.02,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "y",
+            "plane": "y=1",
+            "excessAtRmin": 0.009,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "y",
+            "plane": "y=2",
+            "excessAtRmin": 0.013,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "y",
+            "plane": "y=3",
+            "excessAtRmin": 0.014,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "y",
+            "plane": "y=4",
+            "excessAtRmin": 0.015,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "y",
+            "plane": "y=5",
+            "excessAtRmin": 0.015,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 0°",
+            "excessAtRmin": 0.02,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 10°",
+            "excessAtRmin": 0.012,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 20°",
+            "excessAtRmin": 0.019,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 30°",
+            "excessAtRmin": 0.019,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 40°",
+            "excessAtRmin": 0.023,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 50°",
+            "excessAtRmin": 0.025,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 60°",
+            "excessAtRmin": 0.018,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 70°",
+            "excessAtRmin": 0.019,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 80°",
+            "excessAtRmin": 0.015,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "mer",
+            "plane": "head meridian 90°",
+            "excessAtRmin": 0.016,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=17.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=18.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=20.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=21.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=23.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=24.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=26.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=27.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=29.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=30.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=32.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=33.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=35.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=36.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=38.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=39.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=41.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=42.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=44.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=45.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=47.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=48.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=50.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=51.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=53.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=54.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=56.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=57.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=59.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=60.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=62.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=63.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=65.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=66.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=68.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=69.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=71.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=72.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=74.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=75.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=77.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=78.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=80.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=81.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=83.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=84.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=86.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=87.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=89.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=90.6",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=92.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=93.6",
+            "excessAtRmin": 0.002,
+            "rEstimate": ">= 2"
+          },
+          {
+            "family": "z",
+            "plane": "z=95.1",
+            "excessAtRmin": 0,
+            "rEstimate": ">= 2"
+          }
+        ],
+        "minR": ">= 2",
+        "minAt": null,
+        "pass": true
+      }
+    },
+    "meshing": {
+      "edge": 0.7,
+      "attempts": 1,
+      "log": [
+        {
+          "gridShift": [
+            0,
+            0
+          ],
+          "edge": 0.7,
+          "demoldFailures": 0,
+          "samples": [],
+          "creaseMm": 0
+        }
+      ]
+    },
+    "layout": {
+      "sLat": -8.42,
+      "sMed": 16.39,
+      "sBase": 8.49,
+      "baseRadius": 21.91,
+      "holeLineX": -11,
+      "holeZ": [
+        88.2,
+        79.7,
+        71.2
+      ],
+      "finRadiusXZ": 8
+    }
+  },
+  "validation": {
+    "ok": true,
+    "failures": [],
+    "warnings": [],
+    "status": "NoError",
+    "components": 1,
+    "genus": 3,
+    "expectedGenus": 3,
+    "triangles": 140720,
+    "vertices": 70356,
+    "volume": {
+      "mm3": 51040.6,
+      "cm3": 51.04
+    },
+    "surfaceAreaMm2": 10241.4,
+    "pmma": {
+      "densityGcm3": 1.18,
+      "assumption": "ASSUMPTION: cured PMMA bone cement 1.18 g/cm³; one 40 g pack counted as 40 g of cement (ignores monomer mass and waste — conservative)",
+      "massG": 60.2,
+      "packs40gExact": 1.51,
+      "packs40g": 2
+    },
+    "bounds": {
+      "min": [
+        -19,
+        -23.907,
+        0
+      ],
+      "max": [
+        29.997,
+        23.907,
+        114.997
+      ],
+      "size": [
+        48.997,
+        47.813,
+        114.997
+      ]
+    },
+    "symmetry": {
+      "maxDev": 0.0009,
+      "meanDev": 0,
+      "vertices": 70356,
+      "exactMirrorMatches": 67988,
+      "closestPointQueries": 2368,
+      "worstVertex": [
+        10.632,
+        -5.217,
+        80.279
+      ],
+      "tol": 0.05,
+      "pass": true
+    },
+    "demold": {
+      "spacing": 0.5,
+      "rays": 22540,
+      "raysHittingSolid": 10870,
+      "failures": 0,
+      "ambiguous": 0,
+      "ambiguousLimit": 5,
+      "maxIntervalsOnALine": 1,
+      "failRegionXZ": null,
+      "samples": [],
+      "pass": true
+    },
+    "holes": [
+      {
+        "x": -11,
+        "z": 88.201,
+        "r": 1.25,
+        "open": true
+      },
+      {
+        "x": -11,
+        "z": 79.701,
+        "r": 1.25,
+        "open": true
+      },
+      {
+        "x": -11,
+        "z": 71.201,
+        "r": 1.25,
+        "open": true
+      }
+    ],
+    "thickness": {
+      "samples": 2779,
+      "skipped": 0,
+      "skippedNearHoles": 149,
+      "noHit": 0,
+      "edgeSamples": 72,
+      "edgeSamplesMin": 7.465,
+      "min": 6.516,
+      "p1": 6.699,
+      "p5": 9.33,
+      "median": 20.269,
+      "where": {
+        "p": [
+          -18.6,
+          3.05,
+          69.83
+        ],
+        "n": [
+          -0.98,
+          0.08,
+          -0.19
+        ]
+      },
+      "thinnest": [
+        {
+          "d": 6.516,
+          "p": [
+            -18.6,
+            3.05,
+            69.83
+          ],
+          "n": [
+            -0.98,
+            0.08,
+            -0.19
+          ]
+        },
+        {
+          "d": 6.527,
+          "p": [
+            -15.82,
+            3.08,
+            94.24
+          ],
+          "n": [
+            -0.61,
+            0.11,
+            0.78
+          ]
+        },
+        {
+          "d": 6.552,
+          "p": [
+            -18.77,
+            2.67,
+            88.22
+          ],
+          "n": [
+            -1,
+            0.07,
+            0.02
+          ]
+        },
+        {
+          "d": 6.555,
+          "p": [
+            -16.96,
+            -3.05,
+            93.12
+          ],
+          "n": [
+            -0.77,
+            -0.14,
+            0.63
+          ]
+        },
+        {
+          "d": 6.574,
+          "p": [
+            -18.38,
+            -2.47,
+            68.75
+          ],
+          "n": [
+            -0.94,
+            -0.09,
+            -0.33
+          ]
+        },
+        {
+          "d": 6.61,
+          "p": [
+            -13.66,
+            -2.22,
+            95.54
+          ],
+          "n": [
+            -0.35,
+            -0.11,
+            0.93
+          ]
+        },
+        {
+          "d": 6.641,
+          "p": [
+            -18.8,
+            2.23,
+            79.32
+          ],
+          "n": [
+            -1,
+            0.09,
+            0
+          ]
+        },
+        {
+          "d": 6.674,
+          "p": [
+            -18.09,
+            1.3,
+            91.64
+          ],
+          "n": [
+            -0.89,
+            0.09,
+            0.44
+          ]
+        },
+        {
+          "d": 6.703,
+          "p": [
+            -18.49,
+            -3.95,
+            79.43
+          ],
+          "n": [
+            -0.93,
+            -0.36,
+            -0.04
+          ]
+        },
+        {
+          "d": 6.742,
+          "p": [
+            -18.9,
+            -0.43,
+            89.18
+          ],
+          "n": [
+            -0.99,
+            -0.07,
+            0.11
+          ]
+        }
+      ],
+      "minRequired": 6,
+      "hardMin": 5.4,
+      "pass": true
+    },
+    "creases": {
+      "maxCreaseDeg": 35,
+      "edges": 0,
+      "lengthMm": 0,
+      "worstDeg": 0,
+      "worstAt": null,
+      "locations": [],
+      "slivers": 28522,
+      "maxLengthMm": 2,
+      "pass": true,
+      "knifeEdges": {
+        "interiorBelowDeg": 80,
+        "lengthMm": 0,
+        "sharpestDeg": null,
+        "at": null
+      }
+    },
+    "head": {
+      "center": [
+        6,
+        0,
+        91
+      ],
+      "radius": 24,
+      "axis": [
+        0.7071,
+        0,
+        0.7071
+      ],
+      "capAngleDeg": 84.28409142954588,
+      "vertices": 5617,
+      "facets": 11388,
+      "areaMm2": 3289,
+      "capCoverage": 1.0093,
+      "maxVertexDev": 0,
+      "maxFacetDev": 0.00961,
+      "worstFacetPoint": [
+        -8.704,
+        -4.298,
+        109.462
+      ],
+      "lsqFit": {
+        "center": [
+          6,
+          0,
+          91
+        ],
+        "radius": 24,
+        "centerErr": 0,
+        "radiusErr": 0
+      },
+      "capRays": {
+        "rays": 2000,
+        "maxOutward": 0,
+        "maxInward": 0.0096,
+        "worst": [
+          23.323,
+          0,
+          107.603
+        ]
+      },
+      "tol": 0.05,
+      "failures": [],
+      "pass": true
+    },
+    "timingMs": {
+      "basics": 6,
+      "bvh": 48,
+      "symmetry": 32,
+      "demold": 20,
+      "thickness": 15,
+      "creases": 26,
+      "head": 23,
+      "total": 171,
+      "build": 5567,
+      "render": 241
+    }
+  },
+  "files": {
+    "stl": "stl/B_h48.stl"
+  },
+  "generated": "2026-09-26T15:03:37.278Z"
+}

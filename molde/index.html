@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Molde do espaçador C</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+    "manifold-3d": "https://cdn.jsdelivr.net/npm/manifold-3d@2.5.1/manifold.js"
+  }
+}
+</script>
+<style>
+  :root { --bg: #f6f5f1; --panel: #ffffff; --ink: #222; --muted: #666; --line: #ddd; --acc: #2f6fb0; --bad: #b3261e; --good: #1e7b3a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.4 system-ui, -apple-system, Segoe UI, sans-serif; color: var(--ink); background: var(--bg); display: grid; grid-template-columns: 300px 1fr; height: 100vh; }
+  aside { background: var(--panel); border-right: 1px solid var(--line); padding: 14px 16px; overflow-y: auto; }
+  h1 { font-size: 17px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+  label { display: block; margin: 10px 0 3px; font-weight: 600; font-size: 13px; }
+  select, input { width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit; background: #fff; }
+  .row { display: flex; gap: 8px; } .row > div { flex: 1; }
+  .hint { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+  button { font: inherit; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--line); background: #fff; cursor: pointer; }
+  button.primary { background: var(--acc); color: #fff; border-color: var(--acc); width: 100%; margin-top: 14px; font-weight: 600; }
+  button:disabled { opacity: .5; cursor: default; }
+  .views, .dl { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .views button.on { background: #e8f0f8; border-color: var(--acc); }
+  #status { margin-top: 12px; font-size: 12.5px; white-space: pre-wrap; }
+  .ok { color: var(--good); } .bad { color: var(--bad); }
+  main { position: relative; }
+  #viewer { position: absolute; inset: 0; }
+  #nogl { position: absolute; inset: 0; display: none; place-items: center; color: var(--muted); padding: 20px; text-align: center; }
+  table { border-collapse: collapse; width: 100%; font-size: 12px; margin-top: 8px; }
+  td { padding: 2px 0; border-bottom: 1px solid #eee; } td:last-child { text-align: right; }
+  @media (max-width: 760px) { body { grid-template-columns: 1fr; grid-template-rows: auto 60vh; height: auto; } }
+</style>
+</head>
+<body>
+<aside>
+  <h1>Molde de 2 metades — espaçador C</h1>
+  <div class="sub">Pesquisa paralela (não é o SchulterPlan). Enchimento aberto; partição y = 0; ANT/POST.</div>
+
+  <label for="variant">Modelo</label>
+  <select id="variant">
+    <option value="long" selected>C longo, sem dreno (150 mm) — padrão</option>
+    <option value="short">C curto + dreno</option>
+  </select>
+  <div class="hint" id="varHint">Parte proximal de 110 mm; a haste distal é o dreno de tórax cheio de cimento.</div>
+
+  <label for="head">Cabeça (Ø mm)</label>
+  <select id="head"><option>44</option><option>48</option><option selected>52</option></select>
+
+  <div id="tubeOpts">
+  <div class="row">
+    <div><label for="fr">Dreno (Fr)</label>
+      <select id="fr"><option>24</option><option selected>28</option><option>32</option><option>36</option></select></div>
+    <div><label for="od">OD medido (mm)</label><input id="od" type="number" step="0.05" min="5" max="14" placeholder="Fr/3"></div>
+  </div>
+  <div class="hint">Com OD medido, o Fr é ignorado. OD = Fr/3 (28 Fr = 9,33 mm).</div>
+
+  <div class="row">
+    <div><label for="tclear">Folga do dreno (Ø mm)</label><input id="tclear" type="number" step="0.05" value="0.4" min="0" max="1.5"></div>
+  </div>
+  </div>
+  <div class="row">
+    <div><label for="clear">Folga dos pinos (mm/lado)</label><input id="clear" type="number" step="0.05" value="0.20" min="0" max="0.6"></div>
+  </div>
+  <label for="wall">Parede mínima (mm)</label>
+  <input id="wall" type="number" step="0.5" value="8" min="4" max="20">
+
+  <button id="go" class="primary">Gerar molde</button>
+
+  <div class="views" id="views">
+    <button data-v="closed" class="on">Fechado</button>
+    <button data-v="open">Aberto (explodido)</button>
+    <button data-v="ANT">Só ANT</button>
+    <button data-v="POST">Só POST</button>
+  </div>
+  <div class="dl">
+    <button id="dlA" disabled>Baixar ANT.stl</button>
+    <button id="dlP" disabled>Baixar POST.stl</button>
+    <button id="dlJ" disabled>Relatório .json</button>
+  </div>
+  <div id="status">Carregando o motor…</div>
+  <table id="facts"></table>
+</aside>
+<main>
+  <div id="viewer"></div>
+  <div id="nogl">Sem WebGL neste navegador: a geração e os downloads funcionam, só a pré-visualização 3D não.</div>
+</main>
+
+<script type="module">
+import Module from 'manifold-3d';
+import { buildMold } from './src/mold.mjs';
+import { validateMold } from './src/validate.mjs';
+import { positiveFromSTL, describePositive } from './src/positive.mjs';
+import { toSTL } from './src/stl.mjs';
+import { toArrays, bake, cylZ } from './src/geom.mjs';
+
+const $ = (id) => document.getElementById(id);
+const status = (html) => { $('status').innerHTML = html; };
+let E = null, viewer = null, current = null, view = 'closed';
+const cache = new Map();
+
+async function getPositive(D, variant) {
+  const name = variant === 'long' ? `C_longo_h${D}` : `C_h${D}`;
+  if (cache.has(name)) return cache.get(name);
+  // positivos publicados em ../stl/positivos/ (no repositório); se faltar, tenta ../positivo/stl/ (build local)
+  let dir = '../stl/positivos';
+  let rs = await fetch(`${dir}/${name}.stl`);
+  if (!rs.ok) { dir = '../positivo/stl'; rs = await fetch(`${dir}/${name}.stl`); }
+  if (!rs.ok) throw new Error(`positivo ${name}.stl: HTTP ${rs.status}`);
+  const [stl, json] = await Promise.all([rs.arrayBuffer(), fetch(`${dir}/${name}.json`).then((r) => r.json())]);
+  const { manifold, arrays } = positiveFromSTL(E, stl);
+  const src = { positive: manifold, arrays, desc: describePositive(json), source: `${dir.replace('../', '')}/${name}.stl` };
+  cache.set(name, src);
+  return src;
+}
+
+/* C longo: the Ø3.2 core wire (capsules along its polyline), leaving the
+   distal wall by 15 mm through the exit hole. */
+function wireSolid(mold) {
+  const w = mold.wire, pts = w.polyline.map((q) => q.slice());
+  pts[0][2] = mold.layout.distal.distalFaceZ - 15;
+  let out = null;
+  for (let i = 0; i + 1 < pts.length; i++) {
+    const a = E.Manifold.sphere(w.d / 2, 20).translate(pts[i]), c = E.Manifold.sphere(w.d / 2, 20).translate(pts[i + 1]);
+    const seg = E.Manifold.hull([a, c]);
+    out = out ? out.add(seg) : seg;
+  }
+  return out;
+}
+
+/* ---------------- viewer (optional: the generator works without GL) ---------------- */
+async function makeViewer() {
+  try {
+    const THREE = await import('three');
+    const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+    const el = $('viewer');
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    el.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf6f5f1);
+    const cam = new THREE.PerspectiveCamera(35, 1, 1, 5000);
+    cam.up.set(0, 0, 1);
+    const ctl = new OrbitControls(cam, renderer.domElement);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8070, 1.1));
+    const d1 = new THREE.DirectionalLight(0xffffff, 1.6); d1.position.set(-150, -250, 300); scene.add(d1);
+    const d2 = new THREE.DirectionalLight(0xffffff, 0.6); d2.position.set(200, 150, -100); scene.add(d2);
+    const group = new THREE.Group(); scene.add(group);
+    const resize = () => { const w = el.clientWidth, h = el.clientHeight; renderer.setSize(w, h, false); renderer.domElement.style.width = '100%'; renderer.domElement.style.height = '100%'; cam.aspect = w / Math.max(1, h); cam.updateProjectionMatrix(); };
+    window.addEventListener('resize', resize); resize();
+    (function loop() { requestAnimationFrame(loop); ctl.update(); renderer.render(scene, cam); })();
+    const geom = (m) => {
+      const a = toArrays(m);
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.BufferAttribute(a.positions, 3));
+      g.setIndex(new THREE.BufferAttribute(a.indices, 1));
+      const ng = g.toNonIndexed(); ng.computeVertexNormals(); g.dispose();
+      return ng;
+    };
+    return {
+      show(items, dir) {
+        for (const c of [...group.children]) { group.remove(c); c.geometry.dispose(); c.material.dispose(); }
+        for (const it of items) {
+          const mat = new THREE.MeshStandardMaterial({ color: it.color, roughness: 0.6, metalness: 0.05, side: THREE.DoubleSide });
+          group.add(new THREE.Mesh(geom(it.m), mat));
+        }
+        const box = new THREE.Box3().setFromObject(group);
+        const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3()).length();
+        ctl.target.copy(c);
+        cam.position.copy(c).add(new THREE.Vector3(...dir).normalize().multiplyScalar(s * 1.9));
+        cam.near = s / 100; cam.far = s * 10; cam.updateProjectionMatrix();
+      },
+    };
+  } catch (e) {
+    console.warn('viewer off:', e);
+    $('nogl').style.display = 'grid';
+    return null;
+  }
+}
+
+const ROT_Z180 = [-1, 0, 0, 0, -1, 0, 0, 0, 1];
+function refreshView() {
+  if (!viewer || !current) return;
+  const { mold } = current, L = mold.layout, b = L.block, W = b.x[1] - b.x[0];
+  const tube = L.tube ? cylZ(E, 0, 0, L.tube.distalFaceZ - 45, L.tube.stopZ, L.tube.odMm / 2, L.tube.odMm / 2, 48) : wireSolid(mold);
+  const tubeColor = L.tube ? 0xaabeaa : 0x6e7380;
+  if (view === 'closed') viewer.show([{ m: mold.ant, color: 0x78a0cd }, { m: mold.post, color: 0xe1a069 }, { m: tube, color: tubeColor }], [-0.6, -1, 0.5]);
+  else if (view === 'ANT') viewer.show([{ m: mold.ant, color: 0x78a0cd }], [0.2, -1, 0.4]);
+  else if (view === 'POST') viewer.show([{ m: mold.post, color: 0xe1a069 }], [-0.2, 1, 0.4]);
+  else {
+    const antOpen = bake(E, mold.ant, ROT_Z180, [b.x[0] + b.x[1] + W + 25, 0, 0]);
+    const lift = b.y[1] + 30;
+    viewer.show([
+      { m: mold.post, color: 0xe1a069 }, { m: antOpen, color: 0x78a0cd },
+      { m: mold.parts.cement.translate([W / 2 + 12, lift, 0]), color: 0xece2c8 },
+      { m: tube.translate([W / 2 + 12, lift, 0]), color: tubeColor },
+    ], [-0.15, 1, 0.6]);
+  }
+}
+
+function download(name, bytes, type) {
+  const url = URL.createObjectURL(new Blob([bytes], { type }));
+  const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+async function generate() {
+  $('go').disabled = true;
+  try {
+    const D = Number($('head').value);
+    const variant = $('variant').value, long = variant === 'long';
+    status(`Gerando ${long ? 'C longo' : 'C curto + dreno'}, cabeça ${D}…`);
+    await new Promise((r) => setTimeout(r, 20));
+    const t0 = performance.now();
+    const src = await getPositive(D, variant);
+    const tLoad = performance.now() - t0;
+    const od = $('od').value.trim();
+    const user = {
+      headD: D, fr: Number($('fr').value), tubeOD: od ? Number(od) : null,
+      tubeClearDia: Number($('tclear').value), pinClear: Number($('clear').value), wall: Number($('wall').value),
+    };
+    const t1 = performance.now();
+    if (current) { current.mold.ant.delete(); current.mold.post.delete(); }
+    const mold = buildMold(E, src, user);
+    const tBuild = performance.now() - t1;
+    const t2 = performance.now();
+    const val = validateMold(E, mold, { full: false });
+    const tVal = performance.now() - t2;
+    const p = mold.params;
+    const tag = p.tubeOD != null ? `OD${p.tubeODmm.toFixed(2).replace('.', 'p')}` : `${p.fr}Fr`;
+    current = { mold, val, base: long ? `C_longo_h${D}` : `C_h${D}_${tag}` };
+    const r = mold.report, L = mold.layout;
+    const bs = val.checks.ANT.bedStraight;
+    const g = r.cement.cavityCm3 * 1.18;
+    const rows = [
+      ['Metade (mm)', r.halves.ANT.sizeMm.join(' × ')],
+      ['Mesa A1 mini (reta)', `${bs.footprintMm.join(' × ')} mm, folga ${bs.marginMm.join(' / ')} mm ${bs.fits ? '✓' : '✗'}`],
+      ['Cimento na cavidade', `${r.cement.cavityCm3} cm³ ≈ ${g.toFixed(0)} g (${Math.ceil(g / 40)} pacote${Math.ceil(g / 40) > 1 ? 's' : ''} de 40 g)`],
+      ...(long ? [
+        ['Espaçador', `${L.distal.totalLenMm} mm, haste Ø${L.distal.stemD}, ponta arredondada, sem dreno`],
+        ['Fio de aço', L.distal.wireHole ? `sai pela ponta: furo Ø${L.distal.wireHole.d} na parede distal (${L.distal.endWallMm} mm)` : 'todo dentro do cimento (sem furo)'],
+      ] : [
+        ['Dreno', `OD ${L.tube.odMm} mm (${p.tubeODsource}) · furo Ø${L.tube.boreD}`],
+        ['Inserir o dreno', `${L.tube.insertionDepthFromDistalFaceMm} mm a partir da face distal`],
+      ]),
+      ['Pinos', L.pins.map((q) => `${q.name} Ø${q.d} macho ${q.male}`).join(' · ')],
+      ['Parafusos', `${L.bolts.length} × M5 × ${L.bolts[0] ? L.bolts[0].boltLengthMm : '–'} mm, porca na POST`],
+      ['Componentes', `ANT ${val.checks.ANT.components} · POST ${val.checks.POST.components}`],
+    ];
+    $('facts').innerHTML = rows.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('');
+    status(`<span class="${val.ok ? 'ok' : 'bad'}">${val.ok ? 'Checagens rápidas OK' : 'FALHOU: ' + val.failures.join('; ')}</span>`
+      + `\npositivo ${tLoad.toFixed(0)} ms · molde ${tBuild.toFixed(0)} ms · checagens ${tVal.toFixed(0)} ms`
+      + (r.warnings.length ? `\naviso: ${r.warnings.join('; ')}` : '')
+      + `\n(parede mínima e cavidade fechada: rodar test/molde_test.mjs no node)`);
+    for (const id of ['dlA', 'dlP', 'dlJ']) $(id).disabled = false;
+    window.__mold = { ok: val.ok, report: r, layout: L, timings: { tLoad, tBuild, tVal }, failures: val.failures };
+    refreshView();
+  } catch (e) {
+    console.error(e);
+    status(`<span class="bad">Erro: ${e.message}</span>`);
+    window.__mold = { ok: false, error: String(e.message || e) };
+  } finally {
+    $('go').disabled = false;
+  }
+}
+
+$('go').onclick = generate;
+function syncVariant() {
+  const long = $('variant').value === 'long';
+  $('tubeOpts').style.display = long ? 'none' : '';
+  $('varHint').textContent = long
+    ? 'Peça única de cimento, 150 mm (limite da mesa da A1 mini: a metade tem 169 mm e imprime reta). Ponta arredondada; o fio de aço sai por um furo na ponta.'
+    : 'Parte proximal de 110 mm; a haste distal é o dreno de tórax cheio de cimento.';
+}
+$('variant').onchange = () => { syncVariant(); generate(); };
+syncVariant();
+$('views').onclick = (ev) => {
+  const v = ev.target.dataset && ev.target.dataset.v; if (!v) return;
+  view = v;
+  for (const b of $('views').children) b.classList.toggle('on', b.dataset.v === v);
+  refreshView();
+};
+$('dlA').onclick = () => current && download(`${current.base}_ANT.stl`, toSTL(current.mold.ant, `${current.base} ANT`), 'model/stl');
+$('dlP').onclick = () => current && download(`${current.base}_POST.stl`, toSTL(current.mold.post, `${current.base} POST`), 'model/stl');
+$('dlJ').onclick = () => current && download(`${current.base}.json`, JSON.stringify({ params: current.mold.params, layout: current.mold.layout, report: current.mold.report, validation: current.val }, null, 2), 'application/json');
+
+(async () => {
+  const wasm = await Module();
+  wasm.setup();
+  E = wasm;
+  viewer = await makeViewer();
+  await generate();
+})().catch((e) => { status(`<span class="bad">Erro ao iniciar: ${e.message}</span>`); window.__mold = { ok: false, error: String(e) }; });
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+# saídas dos geradores (as cópias publicadas ficam em stl/)
+positivo/stl/
+molde/stl/
+positivo/variants/
+**/test/_out/
+out/

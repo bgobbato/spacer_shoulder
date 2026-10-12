@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espaçador de ombro — visualizador de STL</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<style>
+  :root { --bg: #f4f2ec; --panel: #fff; --ink: #222; --muted: #6b675f; --line: #e0ddd4; --acc: #2f6fb0; --sel: #e8f0f8; --bad: #b3261e; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: var(--bg);
+         display: grid; grid-template-columns: 340px 1fr; }
+  aside { background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto; height: 100vh; }
+  header { padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+  h1 { font-size: 17px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 12px; }
+  .grp { border-bottom: 1px solid var(--line); }
+  .grp > h2 { font-size: 13.5px; margin: 0; padding: 10px 16px 2px; }
+  .grp > .note { color: var(--muted); font-size: 11.5px; padding: 0 16px 6px; }
+  .it { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; padding: 6px 16px; cursor: pointer; }
+  .it:hover { background: #f7f6f2; }
+  .it.on { background: var(--sel); }
+  .it img, .it .ph { width: 52px; height: 52px; object-fit: contain; background: #f1efe9; border-radius: 6px; border: 1px solid var(--line); }
+  .it .ph { display: grid; place-items: center; font-size: 10px; color: var(--muted); }
+  .it .t { font-size: 12.5px; }
+  .it .m { font-size: 11px; color: var(--muted); }
+  .it a { color: var(--acc); text-decoration: none; }
+  .it a:hover { text-decoration: underline; }
+  .badge { display: inline-block; font-size: 10px; padding: 0 5px; border-radius: 8px; background: #2f6fb0; color: #fff; margin-left: 4px; vertical-align: 1px; }
+  main { position: relative; height: 100vh; min-width: 0; }
+  #viewer { position: absolute; inset: 0; }
+  #bar { position: absolute; left: 12px; right: 12px; top: 12px; background: rgba(255,255,255,.92); border: 1px solid var(--line);
+         border-radius: 8px; padding: 8px 12px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 12.5px; }
+  #bar .title { font-weight: 600; }
+  #bar .dims { font-variant-numeric: tabular-nums; }
+  #bar button { font: inherit; font-size: 12px; padding: 4px 9px; border-radius: 6px; border: 1px solid var(--line); background: #fff; cursor: pointer; }
+  #bar button.on { background: var(--sel); border-color: var(--acc); }
+  #bar .btns { display: flex; gap: 4px; flex-wrap: wrap; }
+  #bar a { color: var(--acc); }
+  #msg { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; color: var(--muted); font-size: 12px; pointer-events: none; }
+  .err { color: var(--bad); }
+  @media (max-width: 760px) {
+    body { grid-template-columns: 1fr; grid-template-rows: 62vh auto; }
+    main { order: -1; height: 62vh; }
+    aside { height: auto; border-right: 0; border-top: 1px solid var(--line); }
+    #bar { left: 8px; right: 8px; top: 8px; }
+  }
+</style>
+</head>
+<body>
+<aside>
+  <header>
+    <h1>Espaçador de ombro — STL</h1>
+    <div class="sub">Clique para ver em 3D. Arraste para girar, roda do mouse para zoom. Medidas em mm (caixa envolvente X × Y × Z).
+      Ferramenta de pesquisa: não é dispositivo médico.</div>
+  </header>
+  <div id="list"><div class="it">Carregando a lista…</div></div>
+</aside>
+<main>
+  <div id="viewer"></div>
+  <div id="bar"><span class="title">—</span></div>
+  <div id="msg"></div>
+</main>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+const $ = (s) => document.querySelector(s);
+const fmtMB = (b) => (b / 1048576).toFixed(1).replace('.', ',') + ' MB';
+const fmt = (x) => x.toFixed(1).replace('.', ',');
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ---------- cena ---------- */
+const el = $('#viewer');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+el.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf4f2ec);
+const cam = new THREE.PerspectiveCamera(32, 1, 1, 10000);
+cam.up.set(0, 0, 1);                       // contrato: eixo da haste = +Z
+const ctl = new OrbitControls(cam, renderer.domElement);
+ctl.enableDamping = true;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8f8676, 1.15));
+const key = new THREE.DirectionalLight(0xffffff, 1.7); key.position.set(-1.2, -2, 2.4); scene.add(key);
+const fill = new THREE.DirectionalLight(0xffffff, 0.55); fill.position.set(2, 1.5, -0.8); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffffff, 0.45); rim.position.set(0.5, 2.5, 1.5); scene.add(rim);
+const group = new THREE.Group(); scene.add(group);
+const boxHelper = new THREE.Box3Helper(new THREE.Box3(), 0x9a958a); boxHelper.visible = false; scene.add(boxHelper);
+
+function resize() {
+  const w = el.clientWidth, h = el.clientHeight;
+  renderer.setSize(w, h, false);
+  renderer.domElement.style.width = '100%'; renderer.domElement.style.height = '100%';
+  cam.aspect = w / Math.max(1, h); cam.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize); resize();
+(function loop() { requestAnimationFrame(loop); ctl.update(); renderer.render(scene, cam); })();
+
+const MAT = {
+  ivory: () => new THREE.MeshStandardMaterial({ color: 0xeee6d2, roughness: 0.55, metalness: 0.02 }),
+  ant: () => new THREE.MeshStandardMaterial({ color: 0x86a9d1, roughness: 0.6, metalness: 0.03 }),
+  post: () => new THREE.MeshStandardMaterial({ color: 0xe2a774, roughness: 0.6, metalness: 0.03 }),
+};
+
+/* ---------- carga de STL (com cache) ---------- */
+const loader = new STLLoader();
+const cache = new Map();
+function loadSTL(url) {
+  if (!cache.has(url)) {
+    cache.set(url, fetch(url).then((r) => {
+      if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
+      return r.arrayBuffer();
+    }).then((buf) => { const g = loader.parse(buf); g.computeVertexNormals(); return g; })
+      .catch((e) => { cache.delete(url); throw e; }));
+  }
+  return cache.get(url);
+}
+
+/* ---------- estado ---------- */
+let manifest = null, current = null, mode = 'open', showPositive = true, showBox = true, token = 0;
+const byId = new Map();
+
+function clearGroup() { for (const c of [...group.children]) { group.remove(c); c.material.dispose(); } }
+
+function frame(dir = [-0.55, -1, 0.45]) {
+  const box = new THREE.Box3().setFromObject(group);
+  const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3()).length() || 100;
+  ctl.target.copy(c);
+  cam.position.copy(c).add(new THREE.Vector3(...dir).normalize().multiplyScalar(s * 2.0));
+  cam.near = s / 200; cam.far = s * 20; cam.updateProjectionMatrix();
+  boxHelper.box.copy(box); boxHelper.visible = showBox;
+  return box;
+}
+
+function tris(g) { return g.attributes.position.count / 3; }
+
+async function show(item) {
+  const my = ++token;
+  current = item;
+  for (const n of document.querySelectorAll('.it')) n.classList.toggle('on', n.dataset.id === item.id);
+  $('#msg').textContent = 'Carregando…';
+  try {
+    let meshes = [], files = [], dimsText = null;
+    if (item.kind === 'mold-pair') {
+      const [ga, gp, gpos] = await Promise.all([loadSTL(item.ANT), loadSTL(item.POST), showPositive ? loadSTL(item.positive).catch(() => null) : null]);
+      if (my !== token) return;
+      files = [item.ANT, item.POST];
+      ga.computeBoundingBox(); gp.computeBoundingBox();
+      const sa = ga.boundingBox.getSize(new THREE.Vector3()), sp = gp.boundingBox.getSize(new THREE.Vector3());
+      const sc = ga.boundingBox.clone().union(gp.boundingBox).getSize(new THREE.Vector3());
+      const d3 = (v) => `${fmt(v.x)} × ${fmt(v.y)} × ${fmt(v.z)} mm`;
+      dimsText = `fechado ${d3(sc)} · ANT ${d3(sa)} · POST ${d3(sp)}`;
+      if (mode === 'open') {
+        // aberto como um livro: ANT girada 180° em Z ao lado da POST, as duas cavidades para +Y; positivo na frente
+        gp.computeBoundingBox();
+        const b = gp.boundingBox, W = b.max.x - b.min.x;
+        const post = new THREE.Mesh(gp, MAT.post()); meshes.push(post);
+        const ant = new THREE.Mesh(ga, MAT.ant()); ant.rotation.z = Math.PI; ant.position.x = b.min.x + b.max.x + W + 25; meshes.push(ant);
+        if (gpos) { const m = new THREE.Mesh(gpos, MAT.ivory()); m.position.set(W / 2 + 12, b.max.y + 30, 0); meshes.push(m); }
+      } else {
+        if (mode !== 'POST') meshes.push(new THREE.Mesh(ga, MAT.ant()));
+        if (mode !== 'ANT') meshes.push(new THREE.Mesh(gp, MAT.post()));
+      }
+    } else {
+      const g = await loadSTL(item.file);
+      if (my !== token) return;
+      files = [item.file];
+      const mat = item.kind === 'mold-half' ? (item.half === 'ANT' ? MAT.ant() : MAT.post()) : MAT.ivory();
+      meshes.push(new THREE.Mesh(g, mat));
+    }
+    clearGroup();
+    for (const m of meshes) group.add(m);
+    const dir = item.kind === 'mold-pair' ? (mode === 'open' ? [-0.15, 1, 0.6] : mode === 'POST' ? [-0.2, 1, 0.4] : mode === 'ANT' ? [0.2, -1, 0.4] : [-0.6, -1, 0.5])
+      : item.kind === 'mold-half' && item.printPose ? [-0.6, -0.9, 1.1]
+      : item.kind === 'mold-half' ? (item.half === 'ANT' ? [0.2, -1, 0.4] : [-0.2, 1, 0.4])
+      : item.kind === 'coupon' ? [-0.4, -0.8, 1.2] : [-0.55, -1, 0.45];
+    const box = frame(dir);
+    const sz = box.getSize(new THREE.Vector3());
+    const ntri = meshes.reduce((s, m) => s + tris(m.geometry), 0);
+    renderBar(item, dimsText || `${fmt(sz.x)} × ${fmt(sz.y)} × ${fmt(sz.z)} mm`, ntri, files);
+    $('#msg').textContent = '';
+    window.__viewer = { ok: true, id: item.id, sizeMm: [sz.x, sz.y, sz.z].map((v) => +v.toFixed(2)), triangles: ntri };
+    try { history.replaceState(null, '', '#' + encodeURIComponent(item.id)); } catch { /* file:// */ }
+  } catch (e) {
+    console.error(e);
+    $('#msg').innerHTML = `<span class="err">Erro: ${esc(e.message)}. Abra por um servidor (python3 -m http.server), não direto do disco.</span>`;
+    window.__viewer = { ok: false, error: String(e.message || e) };
+  }
+}
+
+function renderBar(item, dims, ntri, files) {
+  const dl = files.map((f) => {
+    const it = findByFile(f);
+    return `<a href="${esc(f)}" download>${esc(f.split('/').pop())}</a>${it ? ` (${fmtMB(it.sizeBytes)})` : ''}`;
+  }).join(' · ');
+  let btns = '';
+  if (item.kind === 'mold-pair') {
+    const b = (v, t) => `<button data-mode="${v}" class="${mode === v ? 'on' : ''}">${t}</button>`;
+    btns = `<span class="btns">${b('closed', 'Fechado')}${b('open', 'Aberto')}${b('ANT', 'Só ANT')}${b('POST', 'Só POST')}
+      <button data-toggle="pos" class="${showPositive ? 'on' : ''}" title="mostra o positivo entre as metades, no modo aberto">Positivo (aberto)</button></span>`;
+  }
+  btns += `<span class="btns"><button data-toggle="box" class="${showBox ? 'on' : ''}">Caixa</button><button data-toggle="fit">Centralizar</button></span>`;
+  $('#bar').innerHTML = `<span class="title">${esc(item.label)}</span>
+    <span class="dims">${dims}</span>
+    <span class="m">${ntri.toLocaleString('pt-BR')} triângulos</span>
+    ${btns}<span>Baixar: ${dl}</span>`;
+}
+
+$('#bar').addEventListener('click', (ev) => {
+  const b = ev.target.closest('button'); if (!b || !current) return;
+  if (b.dataset.mode) { mode = b.dataset.mode; show(current); }
+  else if (b.dataset.toggle === 'pos') { showPositive = !showPositive; if (showPositive) mode = 'open'; show(current); }
+  else if (b.dataset.toggle === 'box') { showBox = !showBox; boxHelper.visible = showBox; b.classList.toggle('on', showBox); }
+  else if (b.dataset.toggle === 'fit') frame();
+});
+
+function findByFile(f) {
+  for (const g of manifest.groups) for (const it of g.items) if (it.file === f) return it;
+  return null;
+}
+
+/* ---------- lista ---------- */
+function row(it, isPair) {
+  const th = it.thumb ? `<img loading="lazy" src="${esc(it.thumb)}" alt="">` : `<div class="ph">STL</div>`;
+  const meta = isPair
+    ? `ANT + POST · <a href="${esc(it.ANT)}" download>ANT</a> · <a href="${esc(it.POST)}" download>POST</a>`
+    : `${esc(it.name)} · ${fmtMB(it.sizeBytes)} · <a href="${esc(it.file)}" download>baixar</a>${it.json ? ` · <a href="${esc(it.json)}" target="_blank" rel="noopener">relatório</a>` : ''}`;
+  const badge = it.id === manifest.default || (it.printPose && it.file.startsWith('stl/padrao/')) ? '<span class="badge">padrão</span>' : '';
+  return `<div class="it" data-id="${esc(it.id)}">${th}<div><div class="t">${esc(it.label)}${badge}</div><div class="m">${meta}</div></div></div>`;
+}
+
+async function main() {
+  const r = await fetch('stl/manifest.json');
+  if (!r.ok) throw new Error(`stl/manifest.json: HTTP ${r.status} (rode node tools/make_manifest.mjs)`);
+  manifest = await r.json();
+  let html = '';
+  for (const g of manifest.groups) {
+    html += `<section class="grp"><h2>${esc(g.label)}</h2><div class="note">${esc(g.note || '')}</div>`;
+    for (const p of g.pairs) { byId.set(p.id, p); html += row(p, true); }
+    for (const it of g.items) { byId.set(it.id, it); html += row(it, false); }
+    html += '</section>';
+  }
+  $('#list').innerHTML = html;
+  $('#list').addEventListener('click', (ev) => {
+    if (ev.target.closest('a')) return;            // links de download não trocam a seleção
+    const n = ev.target.closest('.it'); if (!n) return;
+    const it = byId.get(n.dataset.id); if (!it) return;
+    show(it);
+  });
+  const hash = decodeURIComponent(location.hash.slice(1));
+  await show(byId.get(hash) || byId.get(manifest.default) || byId.values().next().value);
+}
+main().catch((e) => {
+  console.error(e);
+  $('#list').innerHTML = `<div class="it err">Erro: ${esc(e.message)}</div>`;
+  window.__viewer = { ok: false, error: String(e.message || e) };
+});
+</script>
+</body>
+</html>

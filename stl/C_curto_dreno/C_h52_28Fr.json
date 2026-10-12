@@ -1,0 +1,609 @@
+{
+  "name": "C_h52_28Fr",
+  "generated": "2026-09-29T21:46:51.671Z",
+  "positiveSource": "../positivo/stl/C_h52.stl",
+  "params": {
+    "model": "C",
+    "headD": 52,
+    "fr": 28,
+    "tubeOD": null,
+    "tubeClearDia": 0.4,
+    "guideLen": 25,
+    "boreChamfer": 1.2,
+    "stopLip": 1,
+    "stopLen": 2,
+    "flareDeg": 30,
+    "wireExit": true,
+    "wireClearDia": 0.4,
+    "wireChamfer": 0.8,
+    "bedMargin": 3,
+    "wall": 8,
+    "sideMargin": 12,
+    "topMargin": 11,
+    "cornerR": 5,
+    "pinD": [
+      8,
+      6
+    ],
+    "pinH": 6,
+    "pinChamfer": 0.8,
+    "pinClear": 0.2,
+    "holeExtraDepth": 0.8,
+    "holeChamfer": 0.5,
+    "land": 2.5,
+    "grooveW": 3,
+    "grooveD": 1.5,
+    "exitW": 3,
+    "ventD": 2,
+    "domeMarginDeg": 8,
+    "bolts": true,
+    "boltD": 5.5,
+    "nutAF": 8.4,
+    "nutDepth": 4.5,
+    "featureEdge": 3,
+    "notchLen": 12,
+    "notchDepth": 4,
+    "notchH": 2.5,
+    "engraveDepth": 0.8,
+    "textH": 7,
+    "strokeW": 1.1,
+    "tubeODmm": 9.333333333333334,
+    "tubeODsource": "Fr/3 (28 Fr)",
+    "boreD": 9.733333333333334
+  },
+  "layout": {
+    "frame": "mm; stem axis +Z; head +X (medial); parting plane y = 0; ANT y > 0, POST y < 0",
+    "block": {
+      "x": [
+        -28,
+        44
+      ],
+      "y": [
+        -34,
+        34
+      ],
+      "z": [
+        -10,
+        121
+      ],
+      "halfThicknessY": 34,
+      "cornerR": 5
+    },
+    "distal": {
+      "variant": "tube",
+      "name": "C curto + dreno"
+    },
+    "tube": {
+      "odMm": 9.33,
+      "odSource": "Fr/3 (28 Fr)",
+      "boreD": 9.73,
+      "axis": {
+        "point": [
+          0,
+          0,
+          0
+        ],
+        "dir": [
+          0,
+          0,
+          1
+        ]
+      },
+      "stopZ": 15,
+      "insertionDepthFromDistalFaceMm": 25,
+      "distalFaceZ": -10,
+      "stopFlats": {
+        "xInner": 3.67,
+        "zRange": [
+          15,
+          17
+        ],
+        "lipOverTubeWallMm": 1
+      },
+      "flare": {
+        "zStop": 15,
+        "positiveOD": 9.33,
+        "tubeOD": 9.333333333333334,
+        "flareRebuilt": false,
+        "warnings": [],
+        "flareBaseD": 9.33
+      }
+    },
+    "vents": [
+      {
+        "name": "head-rim",
+        "x": 8.68,
+        "z": 86.68,
+        "y": 23.83,
+        "angleFromAxisDeg": 81,
+        "d": 2
+      },
+      {
+        "name": "fin",
+        "x": -10.43,
+        "z": 85.16,
+        "y": 4.02,
+        "angleFromAxisDeg": 129.6,
+        "d": 2
+      }
+    ],
+    "domeCapDeg": 72.5,
+    "grooves": {
+      "land": 2.5,
+      "width": 3,
+      "depthPerHalf": 1.5,
+      "exits": [
+        "top",
+        "lateral",
+        "medial",
+        "distal (ao longo do furo do dreno)"
+      ]
+    },
+    "pins": [
+      {
+        "name": "P1",
+        "x": 36,
+        "z": 29.5,
+        "d": 8,
+        "male": "ANT",
+        "female": "POST",
+        "holeD": 8.4,
+        "height": 6,
+        "holeDepth": 6.8
+      },
+      {
+        "name": "P2",
+        "x": -21,
+        "z": 60.5,
+        "d": 6,
+        "male": "POST",
+        "female": "ANT",
+        "holeD": 6.4,
+        "height": 6,
+        "holeDepth": 6.8
+      }
+    ],
+    "bolts": [
+      {
+        "name": "inf-lat",
+        "x": -20,
+        "z": -2,
+        "holeD": 5.5,
+        "nutPocketAF": 8.4,
+        "nutPocketDepth": 4.5,
+        "nutSide": "POST",
+        "boltMinLengthMm": 68.5,
+        "boltLengthMm": 70
+      },
+      {
+        "name": "inf-med",
+        "x": 36,
+        "z": -2,
+        "holeD": 5.5,
+        "nutPocketAF": 8.4,
+        "nutPocketDepth": 4.5,
+        "nutSide": "POST",
+        "boltMinLengthMm": 68.5,
+        "boltLengthMm": 70
+      },
+      {
+        "name": "sup-lat",
+        "x": -20,
+        "z": 113,
+        "holeD": 5.5,
+        "nutPocketAF": 8.4,
+        "nutPocketDepth": 4.5,
+        "nutSide": "POST",
+        "boltMinLengthMm": 68.5,
+        "boltLengthMm": 70
+      },
+      {
+        "name": "sup-med",
+        "x": 36,
+        "z": 113,
+        "holeD": 5.5,
+        "nutPocketAF": 8.4,
+        "nutPocketDepth": 4.5,
+        "nutSide": "POST",
+        "boltMinLengthMm": 68.5,
+        "boltLengthMm": 70
+      }
+    ],
+    "notches": [
+      {
+        "name": "lateral",
+        "x0": -29,
+        "x1": -24,
+        "z0": 41.95,
+        "z1": 53.95,
+        "depthY": 2.5
+      },
+      {
+        "name": "medial",
+        "x0": 40,
+        "x1": 45,
+        "z0": 42.95,
+        "z1": 54.95,
+        "depthY": 2.5
+      }
+    ],
+    "engraving": {
+      "depthMm": 0.8,
+      "strokeMm": 1.1,
+      "ANT": {
+        "face": "y = +34",
+        "lines": [
+          {
+            "text": "ANT",
+            "h": 9,
+            "z": 28.8
+          },
+          {
+            "text": "C 52",
+            "h": 7,
+            "z": 17.8
+          },
+          {
+            "text": "28FR",
+            "h": 7,
+            "z": 6.8
+          }
+        ],
+        "tubeGauge": {
+          "axisX": 0,
+          "fromZ": -10,
+          "stopZ": 15,
+          "label": "25"
+        }
+      },
+      "POST": {
+        "face": "y = -34",
+        "lines": [
+          {
+            "text": "POST",
+            "h": 8.5,
+            "z": 28.8
+          },
+          {
+            "text": "C 52",
+            "h": 7,
+            "z": 17.8
+          },
+          {
+            "text": "28FR",
+            "h": 7,
+            "z": 6.8
+          }
+        ],
+        "wireTemplate": {
+          "polylineXZ": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              58
+            ],
+            [
+              7.76,
+              91.62
+            ]
+          ],
+          "fromZ": -10
+        }
+      },
+      "readingNote": "texto lido de fora de cada metade (ANT visto de +Y, POST visto de −Y)",
+      "fitNote": "transição dreno→haste = a do positivo"
+    }
+  },
+  "report": {
+    "model": "C",
+    "variant": "tube",
+    "headD": 52,
+    "fr": 28,
+    "tubeODmm": 9.33,
+    "halves": {
+      "ANT": {
+        "volumeCm3": 291.47,
+        "bounds": {
+          "min": [
+            -28,
+            -6,
+            -10
+          ],
+          "max": [
+            44,
+            34,
+            121
+          ]
+        },
+        "sizeMm": [
+          72,
+          40,
+          131
+        ],
+        "triangles": 85968
+      },
+      "POST": {
+        "volumeCm3": 290.46,
+        "bounds": {
+          "min": [
+            -28,
+            -34,
+            -10
+          ],
+          "max": [
+            44,
+            6,
+            121
+          ]
+        },
+        "sizeMm": [
+          72,
+          40,
+          131
+        ],
+        "triangles": 85996
+      }
+    },
+    "cement": {
+      "cavityCm3": 44.66,
+      "cementAboveStopCm3": 44.69,
+      "positiveTotalCm3": 45.72,
+      "note": "cavidade = positivo acima do batente do dreno (z ≥ batente) menos as 2 abas de batente; cimento dentro do dreno não está incluído"
+    },
+    "debrisRemoved": {
+      "ANT": {
+        "count": 0,
+        "volumeMm3": 0
+      },
+      "POST": {
+        "count": 0,
+        "volumeMm3": 0
+      }
+    },
+    "warnings": [],
+    "buildMs": 1107
+  },
+  "estimate": {
+    "assumptions": "fluxo médio 8 mm³/s, PETG 1.27 g/cm³, +10 % de tempo morto; estimativa grosseira — conferir no Bambu Studio",
+    "halves": {
+      "ANT": {
+        "volumeCm3": 291.5,
+        "areaCm2": 386,
+        "encaixe": {
+          "perfil": "teste de encaixe / gesso",
+          "gramas": 126,
+          "horas": 3.8
+        },
+        "cimento": {
+          "perfil": "bancada com cimento (PETG 100 %)",
+          "gramas": 370,
+          "horas": 11.1
+        }
+      },
+      "POST": {
+        "volumeCm3": 290.5,
+        "areaCm2": 389,
+        "encaixe": {
+          "perfil": "teste de encaixe / gesso",
+          "gramas": 127,
+          "horas": 3.8
+        },
+        "cimento": {
+          "perfil": "bancada com cimento (PETG 100 %)",
+          "gramas": 369,
+          "horas": 11.1
+        }
+      }
+    },
+    "cement": {
+      "cavityCm3": 44.7,
+      "gramsAt118": 52.7,
+      "withOverfill30pctG": 68.5,
+      "note": "técnica aberta: encher cada metade com sobra (~30 %); o cimento dentro do dreno não está incluído; densidade 1,18 g/cm³ NÃO VERIFICADA para PMMA com antibiótico"
+    }
+  },
+  "validation": {
+    "ok": true,
+    "failures": [],
+    "warnings": [],
+    "checks": {
+      "ANT": {
+        "status": 0,
+        "components": 1,
+        "componentVolumesCm3": [
+          291.47
+        ],
+        "genus": 6,
+        "sizeMm": [
+          72,
+          40,
+          131
+        ],
+        "fits180": true,
+        "volumeCm3": 291.47,
+        "bedStraight": {
+          "footprintMm": [
+            72,
+            131
+          ],
+          "heightMm": 40,
+          "bedMm": [
+            180,
+            180
+          ],
+          "marginMm": [
+            54,
+            24.5
+          ],
+          "requiredMarginMm": 3,
+          "orientation": "reta (sem girar na mesa): face de partição para cima, X da peça no X da mesa, Z da peça no Y da mesa",
+          "fits": true
+        },
+        "stlEdgesNot2": 0,
+        "stlDuplicateVertexPositions": 0
+      },
+      "POST": {
+        "status": 0,
+        "components": 1,
+        "componentVolumesCm3": [
+          290.4592
+        ],
+        "genus": 6,
+        "sizeMm": [
+          72,
+          40,
+          131
+        ],
+        "fits180": true,
+        "volumeCm3": 290.46,
+        "bedStraight": {
+          "footprintMm": [
+            72,
+            131
+          ],
+          "heightMm": 40,
+          "bedMm": [
+            180,
+            180
+          ],
+          "marginMm": [
+            54,
+            24.5
+          ],
+          "requiredMarginMm": 3,
+          "orientation": "reta (sem girar na mesa): face de partição para cima, X da peça no X da mesa, Z da peça no Y da mesa",
+          "fits": true
+        },
+        "stlEdgesNot2": 0,
+        "stlDuplicateVertexPositions": 0
+      },
+      "halvesOverlapMm3": 0,
+      "pins": [
+        {
+          "name": "P1",
+          "d": 8,
+          "maleHalf": "ANT",
+          "holeHalf": "POST",
+          "protrusionOutsideHoleMm3": 0,
+          "maleInsideOtherHalfMm3": 0,
+          "axisOffsetMm": 0,
+          "holeDeeperThanPinMm": 0.9
+        },
+        {
+          "name": "P2",
+          "d": 6,
+          "maleHalf": "POST",
+          "holeHalf": "ANT",
+          "protrusionOutsideHoleMm3": 0,
+          "maleInsideOtherHalfMm3": 0,
+          "axisOffsetMm": 0,
+          "holeDeeperThanPinMm": 0.9
+        }
+      ],
+      "tube": {
+        "boreFits": [
+          {
+            "z": -7.800000000000001,
+            "center": [
+              0,
+              0
+            ],
+            "radius": 4.865
+          },
+          {
+            "z": 2.5,
+            "center": [
+              0,
+              0
+            ],
+            "radius": 4.865
+          },
+          {
+            "z": 14,
+            "center": [
+              0,
+              0
+            ],
+            "radius": 4.865
+          }
+        ],
+        "stop": {
+          "boreEmptyBelowStop": true,
+          "flatSolidAboveStop": true,
+          "cementPassOpenAtAxis": true,
+          "stopZ": 15,
+          "depthFromDistalFace": 25
+        }
+      },
+      "dome": {
+        "capDeg": 72.54,
+        "ventsInDomeMm3": 0,
+        "groovesInDomeMm3": 0,
+        "ventAnglesDeg": [
+          81,
+          129.6
+        ]
+      },
+      "wall": {
+        "required": 8,
+        "min": 8.162,
+        "limitedBy": "pinHoles",
+        "at": [
+          -17.84,
+          -0.1,
+          62.61
+        ],
+        "byFeature": {
+          "outerFaces": 9.013,
+          "boltHoles": 11.663,
+          "nutPockets": 16,
+          "pryNotches": 16,
+          "pinHoles": 8.162,
+          "engraving": 8.293
+        },
+        "note": "distância superfície-superfície (BVH, vértices + centroides dos dois lados), busca até 16 mm; canal de rebarba, respiros e furo do dreno são ligados à cavidade de propósito e não entram"
+      },
+      "cavity": {
+        "voidMm3": 44661.7,
+        "cavityMm3": 44661.7,
+        "cementAboveStopMm3": 44692.8,
+        "voidVsCementPct": -0.07,
+        "voidMinusCavityMm3": 0.002,
+        "cavityMinusVoidMm3": 0,
+        "voidComponents": 1,
+        "stopFlatsTakeMm3": 31.1
+      },
+      "mirror": {
+        "cavityInAntMm3": 22330.8,
+        "cavityInPostMm3": 22330.8,
+        "diffPct": 0
+      },
+      "wire": {
+        "d": 3.2,
+        "cementCoverMinMm": 2.07,
+        "at": [
+          0,
+          0,
+          15
+        ],
+        "note": "cobertura de cimento entre o fio (eixo do positivo) e o molde, acima do batente; o fio fica dentro do cimento e do dreno: não precisa de saída nem de apoio no molde"
+      }
+    }
+  },
+  "files": {
+    "ANT": "stl/C_h52_28Fr_ANT.stl",
+    "POST": "stl/C_h52_28Fr_POST.stl"
+  },
+  "renders": {
+    "exploded": "render/C_h52_28Fr_exploded.png",
+    "face_ANT": "render/C_h52_28Fr_face_ANT.png",
+    "face_POST": "render/C_h52_28Fr_face_POST.png",
+    "outer_ANT": "render/C_h52_28Fr_outer_ANT.png",
+    "outer_POST": "render/C_h52_28Fr_outer_POST.png",
+    "closed": "render/C_h52_28Fr_closed.png",
+    "distal": "render/C_h52_28Fr_distal.png"
+  }
+}

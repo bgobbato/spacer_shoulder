@@ -1,0 +1,602 @@
+{
+  "model": "C",
+  "name": "C",
+  "description": "Cogumelo com aleta: calota esférica ~0,45·D com borda grossa arredondada, colo cônico curto, aleta lateral com 3 furos de sutura (Y), haste proximal curta terminando no acoplamento do dreno de tórax (haste distal = dreno)",
+  "headD": 52,
+  "params": {
+    "headD": 52,
+    "headHD": 0.45,
+    "rimFillet": 4,
+    "nsDeg": 135,
+    "headOffset": 6,
+    "proxLen": 110,
+    "stemTopD": 12,
+    "stemBotD": 11.5,
+    "tubeClear": 2,
+    "reamerD": 12,
+    "tubeFr": 28,
+    "couplingLen": 15,
+    "shoulderDeg": 30,
+    "rootFillet": 1,
+    "coreWireD": 3.2,
+    "coreCover": 4,
+    "neckDropR": 1,
+    "neckFrac": 0.4,
+    "finT": 8,
+    "finEdgeR": 3.8,
+    "finTopDrop": 1.5,
+    "finTail": 0,
+    "finTaper": 14,
+    "sutureHoles": 0,
+    "holeD": 2.5,
+    "holeEdge": 6.25,
+    "holeSpacing": 9,
+    "holeClear": 0.75,
+    "fillet": 3,
+    "neckFillet": 5,
+    "neckStartFrac": 0.7,
+    "headFillet": 4,
+    "baseInset": 0.3,
+    "proxyInset": 0.3,
+    "edge": 0.6
+  },
+  "meta": {
+    "head": {
+      "center": [
+        6,
+        0,
+        84
+      ],
+      "radius": 26,
+      "axis": [
+        0.7071067811865475,
+        0,
+        0.7071067811865476
+      ],
+      "capAngleDeg": 72.0423968762779
+    },
+    "holes": [],
+    "headCenter": [
+      6,
+      0,
+      84
+    ],
+    "headD": 52,
+    "NSA": 135,
+    "headInfo": {
+      "segments": 160,
+      "rings": 52,
+      "volumeExact": 30397.99028190854,
+      "facetTol": 0.01,
+      "center": [
+        6,
+        0,
+        84
+      ],
+      "radius": 26,
+      "axis": [
+        0.7071067811865475,
+        0,
+        0.7071067811865476
+      ],
+      "cut": 2.5999999999999996,
+      "height": 23.4,
+      "hOverD": 0.44999999999999996,
+      "thetaMaxDeg": 84.26082952273322,
+      "sphereCapDeg": 72.5423968762779,
+      "rimRadius": 25.86967336477212,
+      "baseRadius": 20.986662431172803,
+      "rimFillet": 4,
+      "baseCenter": [
+        7.8384776310850235,
+        0,
+        85.83847763108503
+      ],
+      "apex": [
+        24.384776310850235,
+        0,
+        102.38477631085024
+      ],
+      "validateHead": {
+        "center": [
+          6,
+          0,
+          84
+        ],
+        "radius": 26,
+        "axis": [
+          0.7071067811865475,
+          0,
+          0.7071067811865476
+        ],
+        "capAngleDeg": 72.0423968762779
+      }
+    },
+    "meshing": {
+      "levelSetTries": [
+        {
+          "edge": 0.6,
+          "demoldFailures": 0
+        }
+      ]
+    },
+    "stemTip": [
+      0,
+      0,
+      0
+    ],
+    "tube": {
+      "fr": 28,
+      "odMm": 9.33,
+      "axisPoint": [
+        0,
+        0,
+        0
+      ],
+      "axisDir": [
+        0,
+        0,
+        -1
+      ],
+      "couplingLenMm": 15,
+      "clearanceMm": 2,
+      "batenteZ": 15,
+      "flareDegFromAxis": 30,
+      "flareTopZ": 16.88,
+      "stemAboveFlareD": 11.5,
+      "note": "z ∈ [0, couplingLen] is the SPACE of the chest-tube end (OD = Fr/3), not molded cement: in the mold it becomes a coaxial channel that holds the tube; the tube end stops on the batente plane z = couplingLen and the cast cement closes over it. Tube ID is brand-dependent and not modeled.",
+      "moldChannel": {
+        "openedByPositive": false,
+        "reason": "spacer/moldapp (frozen) builds block = bbox + margin on every side, so no feature of the positive can reach the outside: z ∈ [0, couplingLen] becomes a BLIND pocket Ø tube OD behind a margin-thick (default 6 mm) distal wall.",
+        "axis": {
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "dir": [
+            0,
+            0,
+            -1
+          ]
+        },
+        "holeDMm": 9.63,
+        "options": [
+          "A: after printing, open the distal wall coaxially with the pocket (drill Ø OD+0.3) — or in Bambu Studio add a negative-part cylinder Ø OD+0.3 on this axis before slicing",
+          "B: spacer/lib/src/mold.js buildMold() already cuts tubeHole Ø(OD+0.3) at x = y = 0 along +Z through the bottom wall — same axis as this positive",
+          "C: Claude (not OpenCode) adds an optional tubeHole to moldapp — surgeon decision"
+        ]
+      }
+    },
+    "moldapp": {
+      "sprueXZ": [
+        8.12,
+        55
+      ],
+      "sprueCentreInSolid": false,
+      "sprueOverlapMm": 3.25,
+      "note": "moldapp places its Ø10 sprue along Y through the bbox centre (x, z) = sprueXZ: on this positive the centre is just outside the solid, and the channel cuts 3.25 mm into the side of the stem/neck: it opens into the cavity there, sideways (trim the stub after demolding)"
+    },
+    "canal": {
+      "reamerDMm": 12,
+      "stemMaxDMm": 12,
+      "stemMeasuredApMaxMm": 11.84,
+      "fitsReamerUpToZ": 53,
+      "fitsReamerDepthBelowCutMm": 40.68,
+      "cutPlaneOnAxisZ": 93.68,
+      "note": "below fitsReamerUpToZ the whole cross-section fits a canal reamed to reamerD; above it the fin and the neck blend widen the body (metaphyseal part)",
+      "fitsReamer": true,
+      "minStemDForTubeMm": 11.33
+    },
+    "warnings": [],
+    "coreWire": {
+      "diameterMm": 3.2,
+      "polyline": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          58
+        ],
+        [
+          7.76,
+          0,
+          91.62
+        ]
+      ],
+      "bendDeg": 12.99,
+      "lengthInPartMm": 92.5,
+      "continuesInto": "chest tube (distal), along −Z",
+      "minCoverAboveFlareMm": 3.46,
+      "coverAtBatenteMm": 3.07,
+      "minCoverInFlareMm": 3.07,
+      "coverRuleHoldsFromZ": 18.2,
+      "coverInCouplingMm": 3.07,
+      "coverNote": "cast cement around the wire: 3.07 mm at the tube stop (z = 15), ≥ 3.46 mm from the flare top (z = 16.88) up; the 4 mm rule holds from z = 18.2 up",
+      "endCoverMm": 4,
+      "note": "continuous core wire/pin Ø3.2 mm through tube and proximal part; the solid stays FULL (not subtracted)"
+    },
+    "dims": {
+      "proxLenMm": 110,
+      "sizeMm": [
+        47.75,
+        49.97,
+        110
+      ],
+      "maxExtentMm": 110,
+      "headHeightMm": 23.4,
+      "headHOverD": 0.45,
+      "headBaseCenter": [
+        7.84,
+        0,
+        85.84
+      ],
+      "headFlatBaseD": 41.97,
+      "headRimFillet": 4,
+      "headMedialOffset": 6,
+      "headLateralExtreme": [
+        -8.17,
+        0,
+        103.51
+      ],
+      "headCenterZ": 84,
+      "neckStartZ": 58,
+      "neckBaseD": 20.8,
+      "stemTopD": 12,
+      "stemBotD": 11.5,
+      "stemTaperDegPerSide": 0.35,
+      "finThicknessY": 8,
+      "finLateralX": -15.75,
+      "finBeyondStemMm": 9.75,
+      "finTopZ": 102.01,
+      "finBottomZAtHoles": 69.01,
+      "finCore": [
+        [
+          -8.25,
+          76.51
+        ],
+        [
+          1,
+          62.51
+        ],
+        [
+          -2,
+          94.51
+        ],
+        [
+          -8.25,
+          94.51
+        ]
+      ],
+      "holeColumnX": -8.25,
+      "holeZ": [
+        94.51,
+        85.51,
+        76.51
+      ],
+      "holeCementToEdgeMm": 6.25,
+      "holeCementBetweenMm": 6.5,
+      "holeLigamentsMeasured": null,
+      "bboxMin": [
+        -15.75,
+        -24.99,
+        0
+      ],
+      "bboxMax": [
+        32,
+        24.99,
+        110
+      ]
+    }
+  },
+  "validation": {
+    "ok": true,
+    "failures": [],
+    "warnings": [],
+    "status": "NoError",
+    "components": 1,
+    "genus": 0,
+    "expectedGenus": 0,
+    "triangles": 166890,
+    "vertices": 83447,
+    "volume": {
+      "mm3": 45718.4,
+      "cm3": 45.72
+    },
+    "surfaceAreaMm2": 9366.4,
+    "pmma": {
+      "densityGcm3": 1.18,
+      "assumption": "ASSUMPTION: cured PMMA bone cement 1.18 g/cm³; one 40 g pack counted as 40 g of cement (ignores monomer mass and waste — conservative)",
+      "massG": 53.9,
+      "packs40gExact": 1.35,
+      "packs40g": 2
+    },
+    "bounds": {
+      "min": [
+        -15.75,
+        -24.987,
+        0
+      ],
+      "max": [
+        31.996,
+        24.987,
+        109.996
+      ],
+      "size": [
+        47.746,
+        49.973,
+        109.996
+      ]
+    },
+    "symmetry": {
+      "maxDev": 0.01241,
+      "meanDev": 0.000004,
+      "vertices": 83447,
+      "exactMirrorMatches": 80986,
+      "closestPointQueries": 2461,
+      "worstVertex": [
+        4.17,
+        2.094,
+        14.627
+      ],
+      "tol": 0.05,
+      "pass": true
+    },
+    "demold": {
+      "spacing": 0.5,
+      "rays": 21120,
+      "raysHittingSolid": 9905,
+      "failures": 0,
+      "ambiguous": 0,
+      "ambiguousLimit": 4,
+      "maxIntervalsOnALine": 1,
+      "failRegionXZ": null,
+      "samples": [],
+      "pass": true
+    },
+    "thickness": {
+      "samples": 2890,
+      "skipped": 0,
+      "skippedNearHoles": 0,
+      "noHit": 0,
+      "edgeSamples": 110,
+      "edgeSamplesMin": 0.81,
+      "min": 7.997,
+      "p1": 8,
+      "p5": 8.295,
+      "median": 18.717,
+      "where": {
+        "p": [
+          -12.06,
+          -4,
+          81.49
+        ],
+        "n": [
+          -0.01,
+          -1,
+          0
+        ]
+      },
+      "thinnest": [
+        {
+          "d": 7.997,
+          "p": [
+            -12.06,
+            -4,
+            81.49
+          ],
+          "n": [
+            -0.01,
+            -1,
+            0
+          ]
+        },
+        {
+          "d": 7.998,
+          "p": [
+            -10.86,
+            4,
+            73.65
+          ],
+          "n": [
+            -0.01,
+            1,
+            -0.01
+          ]
+        },
+        {
+          "d": 7.998,
+          "p": [
+            -11.12,
+            -3.99,
+            97.27
+          ],
+          "n": [
+            -0.04,
+            -1,
+            0.03
+          ]
+        },
+        {
+          "d": 7.998,
+          "p": [
+            -11.9,
+            -4,
+            93.14
+          ],
+          "n": [
+            -0.01,
+            -1,
+            0.01
+          ]
+        },
+        {
+          "d": 8,
+          "p": [
+            -7.95,
+            4,
+            80.12
+          ],
+          "n": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "d": 8,
+          "p": [
+            -8.64,
+            -4,
+            70.63
+          ],
+          "n": [
+            0,
+            -1,
+            0
+          ]
+        },
+        {
+          "d": 8,
+          "p": [
+            -5.85,
+            -4,
+            86.06
+          ],
+          "n": [
+            0,
+            -1,
+            0
+          ]
+        },
+        {
+          "d": 8,
+          "p": [
+            -4.46,
+            4,
+            90.2
+          ],
+          "n": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "d": 8,
+          "p": [
+            -6.88,
+            -4,
+            75.12
+          ],
+          "n": [
+            0,
+            -1,
+            0
+          ]
+        },
+        {
+          "d": 8,
+          "p": [
+            -6.39,
+            4,
+            86.11
+          ],
+          "n": [
+            0,
+            1,
+            0
+          ]
+        }
+      ],
+      "minRequired": 6,
+      "hardMin": 5.4,
+      "pass": true
+    },
+    "creases": {
+      "maxCreaseDeg": 35,
+      "edges": 0,
+      "lengthMm": 0,
+      "worstDeg": 0,
+      "worstAt": null,
+      "locations": [],
+      "slivers": 27767,
+      "maxLengthMm": 2,
+      "pass": true,
+      "knifeEdges": {
+        "interiorBelowDeg": 80,
+        "lengthMm": 0,
+        "sharpestDeg": null,
+        "at": null
+      }
+    },
+    "head": {
+      "center": [
+        6,
+        0,
+        84
+      ],
+      "radius": 26,
+      "axis": [
+        0.7071,
+        0,
+        0.7071
+      ],
+      "capAngleDeg": 72.0423968762779,
+      "vertices": 5121,
+      "facets": 10400,
+      "areaMm2": 2972.2,
+      "capCoverage": 1.0117,
+      "maxVertexDev": 0,
+      "maxFacetDev": 0.00929,
+      "worstFacetPoint": [
+        -4.377,
+        8.981,
+        106.072
+      ],
+      "lsqFit": {
+        "center": [
+          6,
+          0,
+          84
+        ],
+        "radius": 26,
+        "centerErr": 0,
+        "radiusErr": 0
+      },
+      "capRays": {
+        "rays": 2000,
+        "maxOutward": 0,
+        "maxInward": 0.0092,
+        "worst": [
+          24.72,
+          0,
+          102.036
+        ]
+      },
+      "tol": 0.05,
+      "failures": [],
+      "pass": true
+    },
+    "timingMs": {
+      "basics": 7,
+      "bvh": 56,
+      "symmetry": 40,
+      "demold": 19,
+      "thickness": 34,
+      "creases": 42,
+      "head": 25,
+      "total": 225,
+      "build": 9103,
+      "render": 230
+    }
+  },
+  "files": {
+    "stl": "stl/C_h52.stl"
+  },
+  "generated": "2026-09-27T12:27:54.708Z"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "spacer_shoulder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Gerador de positivos e moldes de duas metades para espaçador umeral de cimento com antibiótico (pesquisa, não é dispositivo médico).",
+  "type": "module",
+  "license": "UNLICENSED",
+  "scripts": {
+    "positivo": "node positivo/build.mjs",
+    "molde": "node molde/build.mjs",
+    "manifest": "node tools/make_manifest.mjs",
+    "test": "node positivo/test/foundation_test.mjs && node molde/test/molde_test.mjs"
+  },
+  "dependencies": {
+    "manifold-3d": "2.5.1"
+  }
+}
